@@ -337,7 +337,7 @@ html, body {
     height: 100%;
     padding: 20px;
     background: var(--bg-primary);
-    color: var(--text-secondary);
+    color: var(--text-primary);
     border: none;
     resize: none;
     font-family: 'Geist Mono', 'JetBrains Mono', 'Cascadia Code', 'Fira Code', 'Consolas', monospace;
@@ -457,12 +457,12 @@ html, body {
     background: var(--bg-secondary);
     border-top: 1px solid var(--border-subtle);
     font-size: 12px;
-    color: var(--text-muted);
+    color: var(--text-secondary);
     height: 44px;
 }
 
 .footer span {
-    opacity: 0.6;
+    color: var(--text-secondary);
 }
 
 .footer span:first-child::after {

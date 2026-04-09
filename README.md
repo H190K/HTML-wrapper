@@ -3,7 +3,7 @@
 > A client-side live code preview tool for **SWE402 Internet Programming** course.
 
 [![Live Demo](https://img.shields.io/badge/Live%20Demo-htmlrunner.h190k.com-00d4ff?style=flat-square)](https://htmlrunner.h190k.com/)
-[![GitHub Repo](https://img.shields.io/badge/GitHub-H190K/HTML--runner-00d4ff?style=flat-square)](https://github.com/H190K/HTML-wraper)
+[![GitHub Repo](https://img.shields.io/badge/GitHub-H190K/HTML--runner-00d4ff?style=flat-square)](https://github.com/H190K/HTML-wrapper)
 [![Course](https://img.shields.io/badge/Course-SWE402%20Internet%20Programming-00d4ff?style=flat-square)]()
 
 ---
@@ -33,12 +33,12 @@ Open this link in your browser to start using HTML Runner immediately. No instal
 
 ## GitHub Repository
 
-**Repository:** [https://github.com/H190K/HTML-wraper](https://github.com/H190K/HTML-wraper)
+**Repository:** [https://github.com/H190K/HTML-wrapper](https://github.com/H190K/HTML-wrapper)
 
 The repository contains the complete source code for HTML Runner, including:
 
 ```
-HTML-wraper/
+HTML-wrapper/
 ├── index.html        # Main application shell
 ├── css/
 │   └── style.css     # All styling (premium dark theme)
@@ -148,7 +148,7 @@ The iframe uses `sandbox="allow-scripts"` to run user JavaScript safely without 
 
 ## License
 
-All rights reserved. This project was created for educational purposes as part of the SWE402 Internet Programming course.
+This project was created for educational purposes as part of the SWE402 Internet Programming course.
 
 ---
 
@@ -164,4 +164,4 @@ All rights reserved. This project was created for educational purposes as part o
 **Course:** SWE402 Internet Programming  
 **Project:** HTML Runner — Live Code Preview Tool  
 **Live Site:** [https://htmlrunner.h190k.com/](https://htmlrunner.h190k.com/)  
-**Repository:** [https://github.com/H190K/HTML-wraper](https://github.com/H190K/HTML-wraper)
+**Repository:** [https://github.com/H190K/HTML-wrapper](https://github.com/H190K/HTML-wrapper)
