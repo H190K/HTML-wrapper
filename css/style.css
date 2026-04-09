@@ -123,6 +123,12 @@ html, body {
     background-clip: text;
 }
 
+.logo span::selection {
+    background: var(--accent-primary);
+    -webkit-text-fill-color: #3b82f6;
+    color: #3b82f6;
+}
+
 /* === Device Mode Buttons === */
 .device-modes {
     display: flex;
