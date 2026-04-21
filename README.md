@@ -14,7 +14,7 @@
 
 ### Key Features
 
-- **Three-Panel Code Editor** — Write HTML, CSS, and JavaScript in separate tabs
+- **Three-Tab Code Editor** — Write HTML, CSS, and JavaScript in separate tabs
 - **Live Preview** — Instantly see your code execution in a sandboxed iframe
 - **Device Viewport Switching** — Test your designs at Desktop (1200px), Tablet (768px), and Mobile (375px) widths
 - **Run / Rerun** — Manually trigger code execution at any time
@@ -41,7 +41,7 @@ The repository contains the complete source code for HTML Runner, including:
 HTML-wrapper/
 ├── index.html        # Main application shell
 ├── css/
-│   └── style.css     # All styling (premium dark theme)
+│   └── style.css     # All styling (Molten Gold Premium Dark Theme)
 ├── js/
 │   └── app.js        # Application logic
 ├── assets/
@@ -81,7 +81,7 @@ This tool is part of the **SWE402 Internet Programming** course curriculum. It d
 | Layer | Technology | Purpose |
 |-------|------------|---------|
 | Structure | HTML5 | Page markup with semantic elements |
-| Styling | CSS3 | Premium dark theme with cyan accents |
+| Styling | CSS3 | Premium Molten Gold dark theme with amber accents |
 | Interactivity | Vanilla JavaScript (ES6+) | All app logic |
 | ZIP Creation | JSZip via CDN | Client-side file bundling |
 | Hosting | Cloudflare Pages | Fast global CDN distribution |
@@ -122,11 +122,13 @@ The iframe uses `sandbox="allow-scripts"` to run user JavaScript safely without 
 
 | Color | Hex | Usage |
 |-------|-----|-------|
-| Cyan | `#00d4ff` | Primary accent, active states |
-| Mint | `#00ffcc` | Secondary accent, highlights |
-| Background | `#0a0a0f` | Main background |
-| Surface | `#101018` | Cards, panels |
-| Border | `#252535` | Subtle borders |
+| Molten Gold | `#f59e0b` | Primary accent, active states |
+| Gold Bright | `#fbbf24` | Secondary accent, highlights |
+| Gold Dim | `#d97706` | Hover states |
+| Rose Quartz | `#f472b6` | Special highlights |
+| Background | `#09090d` | Main background |
+| Surface | `#111118` | Cards, panels |
+| Border | `#2d2d40` | Subtle borders |
 
 ### Typography
 

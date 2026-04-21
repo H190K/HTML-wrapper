@@ -34,7 +34,7 @@ Coursework deliverable for SWE402 demonstrating core web technologies — HTML, 
 
 ```
 index.html        ← Main shell (two-panel layout + modal)
-css/style.css     ← All styling (shadcn-inspired dark theme)
+css/style.css     ← All styling (Molten Gold Premium Dark Theme)
 js/app.js        ← All logic (run, rerun, save, modal, device modes)
 assets/
   favicon.png     ← Site favicon + OG/Twitter image

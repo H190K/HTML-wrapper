@@ -18,10 +18,13 @@ const htmlEditor = document.getElementById('htmlEditor');
 const cssEditor = document.getElementById('cssEditor');
 const jsEditor = document.getElementById('jsEditor');
 const previewFrame = document.getElementById('previewFrame');
+const previewWrapper = document.getElementById('previewWrapper');
 const dimensionsLabel = document.getElementById('dimensionsLabel');
 const yearDisplay = document.getElementById('yearDisplay');
 const tabBtns = document.querySelectorAll('.tab-btn');
 const deviceBtns = document.querySelectorAll('.device-btn');
+const resizeHandle = document.getElementById('resizeHandle');
+const mainContainer = document.querySelector('.main-container');
 
 // ===================================
 // Device Mode Configuration
@@ -34,6 +37,21 @@ const deviceModes = {
 };
 
 let currentDevice = 'desktop';
+
+function applyDeviceViewport(device) {
+    const mode = deviceModes[device];
+
+    if (!mode) {
+        return;
+    }
+
+    previewFrame.setAttribute('data-device', device);
+    previewFrame.style.maxWidth = '';
+    dimensionsLabel.textContent = mode.label;
+
+    previewWrapper.scrollLeft = 0;
+    previewWrapper.scrollTop = 0;
+}
 
 // ===================================
 // Tab Switching Logic
@@ -66,11 +84,64 @@ deviceBtns.forEach(btn => {
         btn.classList.add('active');
 
         currentDevice = device;
-        previewFrame.setAttribute('data-device', device);
-        dimensionsLabel.textContent = deviceModes[device].label;
 
+        // Start settle animation BEFORE changing viewport
+        previewFrame.classList.remove('just-switched');
+        void previewFrame.offsetWidth;
+        previewFrame.classList.add('just-switched');
+
+        // Change viewport
+        applyDeviceViewport(device);
+
+        // Run code - srcdoc template includes just-switched class for inner animation
         runCode();
+        setTimeout(() => previewFrame.classList.remove('just-switched'), 400);
     });
+});
+
+// ===================================
+// Resizable Panel Handle
+// ===================================
+
+let isResizing = false;
+
+resizeHandle.addEventListener('mousedown', (e) => {
+    isResizing = true;
+    resizeHandle.classList.add('active');
+    document.body.style.cursor = 'col-resize';
+    document.body.style.userSelect = 'none';
+});
+
+document.addEventListener('mousemove', (e) => {
+    if (!isResizing) return;
+
+    const containerRect = mainContainer.getBoundingClientRect();
+    const containerWidth = containerRect.width;
+    const newEditorWidth = e.clientX - containerRect.left;
+
+    // Enforce min/max constraints
+    const minEditorWidth = 250;
+    const maxEditorWidth = containerWidth * 0.6;
+
+    if (newEditorWidth >= minEditorWidth && newEditorWidth <= maxEditorWidth) {
+        const editorPanel = document.querySelector('.editor-panel');
+        const previewPanel = document.querySelector('.preview-panel');
+
+        const editorPercent = (newEditorWidth / containerWidth) * 100;
+        const previewPercent = 100 - editorPercent;
+
+        editorPanel.style.width = `${editorPercent}%`;
+        previewPanel.style.width = `${previewPercent}%`;
+    }
+});
+
+document.addEventListener('mouseup', () => {
+    if (isResizing) {
+        isResizing = false;
+        resizeHandle.classList.remove('active');
+        document.body.style.cursor = '';
+        document.body.style.userSelect = '';
+    }
 });
 
 // ===================================
@@ -86,34 +157,67 @@ function runCode() {
 <html>
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="viewport" content="width=${deviceModes[currentDevice].width}, initial-scale=1.0">
     <style>
-.runner-preview, .runner-preview *, .runner-preview *::before, .runner-preview *::after {
-    box-sizing: border-box !important;
-    margin: 0 !important;
-    padding: 0 !important;
+*, *::before, *::after {
+    box-sizing: border-box;
+}
+html, body {
+    margin: 0;
+    padding: 0;
+    width: 100%;
+    min-height: 100%;
+}
+/* Outer wrapper that receives the animation trigger */
+.runner-preview {
+    width: 100%;
+    margin: 0;
+    padding: 0;
+    /* Smooth content morph when device width changes - 300ms to sync with outer 400ms */
+    transition: opacity 0.3s cubic-bezier(0.4, 0, 0.2, 1),
+                transform 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    will-change: opacity, transform;
+}
+/* Coordinated animation with outer iframe transition */
+.runner-preview.just-switched {
+    opacity: 0.85;
+    transform: scale(0.985);
 }
 ${css}
     </style>
 </head>
 <body>
-<div class="runner-preview">
+<div class="runner-preview just-switched" id="runnerPreview">
 ${html}
 </div>
 <script>
+// Remove animation class after it plays so it can be re-triggered
+(function() {
+    const preview = document.getElementById('runnerPreview');
+    if (preview) {
+        setTimeout(() => preview.classList.remove('just-switched'), 300);
+    }
+})();
+<\/script>
+<script>
 ${js}
 <\/script>
-</body>
+    </body>
 </html>`.trim();
 
     previewFrame.srcdoc = fullHTML;
+    previewWrapper.scrollLeft = 0;
+    previewWrapper.scrollTop = 0;
 }
 
 // Run button click handler
 runBtn.addEventListener('click', runCode);
 
 // Auto-run on page load
-window.addEventListener('DOMContentLoaded', runCode);
+window.addEventListener('DOMContentLoaded', () => {
+    applyDeviceViewport(currentDevice);
+    runCode();
+});
 
 // ===================================
 // Save as ZIP Logic
