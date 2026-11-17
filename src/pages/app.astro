@@ -1,0 +1,30 @@
+---
+import Base from '@/layouts/Base.astro';
+import Playground from '@/components/playground/Playground';
+---
+
+<Base
+  title="Editor | HTML Runner"
+  path="/app"
+  description="Write HTML, CSS and JavaScript side by side and watch it run in a sandboxed preview, with device sizes, a console, share links and export."
+>
+  <style is:global>
+    html,
+    body {
+      height: 100%;
+      overflow: hidden;
+      overscroll-behavior: none;
+    }
+  </style>
+  <noscript>
+    <p style="padding: 2rem; font-family: system-ui, sans-serif">
+      HTML Runner runs your code in the browser, so it needs JavaScript turned on.
+    </p>
+  </noscript>
+  <Playground client:only="react">
+    <div slot="fallback" class="flex h-dvh flex-col bg-paper" aria-busy="true">
+      <div class="h-12 shrink-0 border-b border-line-strong"></div>
+      <div class="flex-1"></div>
+    </div>
+  </Playground>
+</Base>

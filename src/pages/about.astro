@@ -1,0 +1,36 @@
+---
+import SitePage from '@/components/site/SitePage.astro';
+import RunGlyph from '@/components/site/RunGlyph.astro';
+import { AUTHOR_URL, GITHUB_URL } from '@/components/site/links';
+import { Content } from '@/about.md';
+---
+
+<SitePage
+  title="About HTML Runner"
+  description="What HTML Runner is, what it does, how the sandbox keeps your code private, and who built it."
+  path="/about"
+  current="about"
+>
+  <div class="wrap about">
+    <article class="prose-run">
+      <Content />
+    </article>
+    <aside class="about-aside" aria-label="Project details">
+      <a class="btn btn-run" href="/app"><RunGlyph size={11} />Open the editor</a>
+      <dl>
+        <div>
+          <dt class="label-caps">Runs on</dt>
+          <dd>Your browser. No backend.</dd>
+        </div>
+        <div>
+          <dt class="label-caps">Source</dt>
+          <dd><a href={GITHUB_URL} rel="noopener">H190K/HTML-wrapper</a></dd>
+        </div>
+        <div>
+          <dt class="label-caps">Made by</dt>
+          <dd><a href={AUTHOR_URL} rel="noopener">H190K</a></dd>
+        </div>
+      </dl>
+    </aside>
+  </div>
+</SitePage>

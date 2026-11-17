@@ -1,0 +1,30 @@
+---
+import SitePage from '@/components/site/SitePage.astro';
+import RunGlyph from '@/components/site/RunGlyph.astro';
+---
+
+<SitePage title="Page not found | HTML Runner" description="This page isn't on the track." path="/404" noindex>
+  <section class="wrap dnf" aria-labelledby="dnf-title">
+    <div class="dnf-board" role="img" aria-label="Results board: lanes 3 and 5 finished, lane 4 (this page) did not find.">
+      <div class="dnf-row" aria-hidden="true">
+        <span class="display n">3</span><span>/</span><span class="t">0:00.12</span>
+      </div>
+      <div class="dnf-row you" aria-hidden="true">
+        <span class="display n">4</span><span>This page</span><span class="t">DNF</span>
+      </div>
+      <div class="dnf-row" aria-hidden="true">
+        <span class="display n">5</span><span>/app</span><span class="t">0:00.18</span>
+      </div>
+    </div>
+
+    <h1 id="dnf-title" class="display dnf-title">DNF: did not find.</h1>
+    <p class="section-intro">
+      This address left the blocks early and never made it onto the track. Check the link for a typo, or head back to
+      the start.
+    </p>
+    <div class="hero-actions">
+      <a class="btn btn-run btn-lg" href="/app"><RunGlyph size={13} />Open the editor</a>
+      <a class="btn btn-quiet btn-lg" href="/">Back to the start</a>
+    </div>
+  </section>
+</SitePage>

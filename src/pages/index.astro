@@ -1,0 +1,332 @@
+---
+import SitePage from '@/components/site/SitePage.astro';
+import HeroRig from '@/components/site/HeroRig.astro';
+import RunGlyph from '@/components/site/RunGlyph.astro';
+import { GITHUB_URL, AUTHOR_URL, SITE_URL } from '@/components/site/links';
+import { TEMPLATES } from '@/lib/templates';
+
+const title = 'HTML Runner: write HTML, CSS and JS and watch it run';
+const description =
+  'A private, in-browser playground for HTML, CSS and JavaScript. Live sandboxed preview, device sizes, a console, share links and one-click export. No account, nothing uploaded.';
+
+const LANGS = [
+  { key: 'html', label: 'HTML', color: 'var(--lane-html)' },
+  { key: 'css', label: 'CSS', color: 'var(--lane-css)' },
+  { key: 'js', label: 'JS', color: 'var(--lane-js)' },
+] as const;
+
+const heat = TEMPLATES.map((t, i) => ({
+  lane: i + 1,
+  id: t.id,
+  name: t.name,
+  description: t.description,
+  langs: LANGS.filter((l) => t.project[l.key].trim().length > 0),
+}));
+
+const jsonLd = {
+  '@context': 'https://schema.org',
+  '@type': 'WebApplication',
+  name: 'HTML Runner',
+  url: SITE_URL + '/',
+  description,
+  applicationCategory: 'DeveloperApplication',
+  operatingSystem: 'Any (runs in a web browser)',
+  browserRequirements: 'Requires JavaScript and a modern browser.',
+  isAccessibleForFree: true,
+  offers: { '@type': 'Offer', price: '0', priceCurrency: 'USD' },
+  featureList: [
+    'HTML, CSS and JavaScript editors with syntax highlighting',
+    'Live sandboxed preview with auto-run or manual run',
+    'Desktop, tablet and mobile preview sizes',
+    'Console panel for logs and errors',
+    'Share links that keep the project in the URL',
+    'Export as a .zip or a single .html file',
+    'Autosave in the browser, light and dark themes',
+  ],
+  image: SITE_URL + '/og.png',
+  author: { '@type': 'Person', name: 'H190K', url: AUTHOR_URL },
+  sameAs: [GITHUB_URL],
+};
+---
+
+<SitePage title={title} description={description} path="/" current="home">
+  <script slot="head" type="application/ld+json" set:html={JSON.stringify(jsonLd)} />
+
+  <!-- Hero -->
+  <section class="hero" aria-labelledby="hero-title">
+    <div class="wrap">
+      <div class="hero-grid">
+        <h1 id="hero-title" class="display hero-title">
+          <span class="line rise" style="--d:0">Write HTML,</span>
+          <span class="line rise" style="--d:1">CSS and JS.</span>
+          <span class="line rise" style="--d:2">Watch it run.</span>
+        </h1>
+        <div class="rise" style="--d:4">
+          <p class="hero-lede">
+            A playground that lives in a browser tab. Type into three editors and the page builds itself
+            next to them, with a console underneath. No sign-up, no install, and nothing is uploaded.
+          </p>
+          <div class="hero-actions">
+            <a class="btn btn-run btn-lg" href="/app"><RunGlyph size={13} />Open the editor</a>
+            <a class="btn btn-quiet btn-lg" href="#templates">Browse templates</a>
+          </div>
+          <p class="hero-note">
+            Free and <a href={GITHUB_URL} rel="noopener" class="underline decoration-line underline-offset-4 hover:decoration-track">open source on GitHub</a>.
+          </p>
+        </div>
+      </div>
+      <HeroRig />
+    </div>
+  </section>
+
+  <!-- What you can do -->
+  <section class="section" aria-labelledby="kit-title">
+    <div class="wrap kit">
+      <div class="kit-head">
+        <h2 id="kit-title" class="display section-title">Everything a quick experiment needs.</h2>
+        <p class="section-intro">
+          Test a layout, reproduce a bug, sketch an idea for a lesson. It all happens in one tab, and the tab
+          remembers where you left off.
+        </p>
+      </div>
+
+      <ul class="kit-list">
+        <li class="kit-item">
+          <div>
+            <h3>Three editors, one per language</h3>
+            <p>HTML, CSS and JavaScript each get their own lane with syntax highlighting.</p>
+          </div>
+          <div class="kit-vis" aria-hidden="true">
+            {
+              LANGS.map((l, i) => (
+                <span class="chip" style={`--lane-color:${l.color}`}>
+                  <span class="lane-mark" />0{i + 1} {l.label}
+                </span>
+              ))
+            }
+          </div>
+        </li>
+
+        <li class="kit-item">
+          <div>
+            <h3>Runs as you type, or when you say so</h3>
+            <p>
+              Auto-run refreshes the preview a moment after you stop typing. Switch it off and run by hand with <kbd
+                class="kbd">Ctrl</kbd
+              > + <kbd class="kbd">Enter</kbd> (<kbd class="kbd">Cmd</kbd> on a Mac). A stopwatch shows how long each run
+              took to render.
+            </p>
+          </div>
+          <div class="kit-vis" aria-hidden="true">
+            <span class="chip chip-strong"><RunGlyph size={10} />Run</span>
+            <span class="chip"><span class="kbd">Ctrl</span>+<span class="kbd">Enter</span></span>
+            <span class="chip"><span style="width:7px;height:7px;border-radius:50%;background:var(--infield)"></span>12 ms</span>
+          </div>
+        </li>
+
+        <li class="kit-item">
+          <div>
+            <h3>Check it at three sizes</h3>
+            <p>Preview on Desktop, Tablet at 768 &times; 1024, or Mobile at 375 &times; 667.</p>
+          </div>
+          <div class="kit-vis" aria-hidden="true">
+            <div class="devices">
+              <span class="device d-desk"><i></i><span class="label-caps">Desktop</span></span>
+              <span class="device d-tab"><i></i><span class="label-caps">768</span></span>
+              <span class="device d-mob on"><i></i><span class="label-caps">375</span></span>
+            </div>
+          </div>
+        </li>
+
+        <li class="kit-item">
+          <div>
+            <h3>A console under the preview</h3>
+            <p>
+              <code class="font-mono text-[0.9em]">console.log</code>, warnings and uncaught errors from your page show up
+              in a panel, so you don't need to open devtools.
+            </p>
+          </div>
+          <div class="kit-vis" aria-hidden="true">
+            <div class="log">
+              <div><span class="lv">log</span><span>split 1 3.42</span></div>
+              <div class="warn"><span class="lv">warn</span><span>slow frame: 48 ms</span></div>
+              <div class="err"><span class="lv">error</span><span>ReferenceError: tiem is not defined</span></div>
+            </div>
+          </div>
+        </li>
+
+        <li class="kit-item">
+          <div>
+            <h3>Share a link, or take the files</h3>
+            <p>
+              A share link carries the whole project inside the URL. Export downloads a .zip with three files, or one
+              self-contained .html.
+            </p>
+          </div>
+          <div class="kit-vis" aria-hidden="true">
+            <span class="chip">#code=eJyrVspIzc…</span>
+            <span class="chip chip-strong">project.zip</span>
+            <span class="chip chip-strong">index.html</span>
+          </div>
+        </li>
+
+        <li class="kit-item">
+          <div>
+            <h3>Picks up where you left off</h3>
+            <p>Your work autosaves in this browser. Light and dark themes, whichever you prefer.</p>
+          </div>
+          <div class="kit-vis" aria-hidden="true">
+            <span class="swatch"><span class="sw-light">Light</span><span class="sw-dark">Dark</span></span>
+          </div>
+        </li>
+      </ul>
+    </div>
+  </section>
+
+  <!-- Templates -->
+  <section id="templates" class="section" aria-labelledby="templates-title">
+    <div class="wrap">
+      <div class="heat-head">
+        <div>
+          <h2 id="templates-title" class="display section-title">Start from a template</h2>
+          <p class="section-intro">
+            Five small, working projects. Open one, change a line, and see what moves.
+          </p>
+        </div>
+        <a class="btn btn-quiet heat-skip" href="/app">Skip to the editor</a>
+      </div>
+
+      <div class="heat-cols label-caps" aria-hidden="true">
+        <span>Lane</span><span>Template</span><span>What it does</span><span>Uses</span><span></span>
+      </div>
+      <ol class="heat">
+        {
+          heat.map((t) => (
+            <li>
+              <a class="heat-row" href={`/app?template=${t.id}`}>
+                <span class="display heat-lane" aria-hidden="true">
+                  {t.lane}
+                </span>
+                <span class="heat-name">{t.name}</span>
+                <span class="heat-desc">{t.description}</span>
+                <span class="heat-langs label-caps">
+                  <span class="sr-only">Uses </span>
+                  {t.langs.map((l) => (
+                    <span class="lang-tag" style={`--lane-color:${l.color}`}>
+                      <span class="lane-mark" aria-hidden="true" />
+                      {l.label}
+                    </span>
+                  ))}
+                </span>
+                <span class="heat-go" aria-hidden="true">
+                  <RunGlyph size={11} />
+                </span>
+              </a>
+            </li>
+          ))
+        }
+      </ol>
+    </div>
+  </section>
+
+  <!-- Privacy -->
+  <section class="section" aria-labelledby="privacy-title">
+    <div class="wrap privacy">
+      <div>
+        <h2 id="privacy-title" class="display section-title">Your code stays in your browser.</h2>
+        <p class="section-intro">
+          HTML Runner is a set of static files. There is no backend to send your code to, no account to create, and no
+          analytics or tracking.
+        </p>
+
+        <figure class="url-diagram">
+          <div class="url-bar">
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" aria-hidden="true"
+              ><rect x="5" y="10" width="14" height="10" rx="2" stroke="currentColor" stroke-width="2"></rect><path
+                d="M8 10V7a4 4 0 0 1 8 0v3"
+                stroke="currentColor"
+                stroke-width="2"></path></svg
+            >
+            <span class="url-text"
+              ><span class="url-sent">htmlrunner.h190k.com/app</span><span class="url-kept">#code=eJyrVspIzcnJVyjPL8pJ…</span
+              ></span
+            >
+          </div>
+          <figcaption class="url-legend">
+            <div>
+              <strong><span class="key"></span>Sent to the server</strong>
+              Only the page address, to load the editor.
+            </div>
+            <div>
+              <strong><span class="key kept"></span>Never sent</strong>
+              Everything after the <code class="font-mono">#</code>. Browsers keep it to themselves, and that is where a
+              share link holds your project.
+            </div>
+          </figcaption>
+        </figure>
+      </div>
+
+      <ul class="facts">
+        <li>
+          <h3>Saved on this device</h3>
+          <p>
+            Autosave writes to your browser's <code>localStorage</code>. Clear your site data and it's gone, so export
+            anything you want to keep.
+          </p>
+        </li>
+        <li>
+          <h3>Share links live in the URL</h3>
+          <p>
+            The project is compressed into the link itself. Nothing is stored anywhere else, which also means anyone you
+            give the link to can read the code.
+          </p>
+        </li>
+        <li>
+          <h3>Your code runs in a sandbox</h3>
+          <p>
+            The preview is an <code>&lt;iframe sandbox&gt;</code> without same-origin access. Scripts run, but they can't
+            read this site's storage or cookies, so opening a link someone sent you is safe for your saved work.
+          </p>
+        </li>
+      </ul>
+    </div>
+  </section>
+
+  <!-- How it works -->
+  <section class="section" aria-labelledby="how-title">
+    <div class="wrap">
+      <h2 id="how-title" class="display section-title">Write, run, hand it over.</h2>
+      <ol class="legs">
+        <li class="leg">
+          <span class="display leg-num" aria-hidden="true">1</span>
+          <h3>Write</h3>
+          <p>Start blank or from a template. Each language has its own editor, so nothing gets tangled.</p>
+        </li>
+        <li class="leg">
+          <span class="display leg-num" aria-hidden="true">2</span>
+          <h3>Run</h3>
+          <p>
+            Let auto-run keep up with you, or press <kbd class="kbd">Ctrl</kbd> + <kbd class="kbd">Enter</kbd>. Flip
+            between device sizes and read the console as you go.
+          </p>
+        </li>
+        <li class="leg">
+          <span class="display leg-num" aria-hidden="true">3</span>
+          <h3>Share or export</h3>
+          <p>Copy a link that opens the same project, or download it as a .zip or a single .html file.</p>
+        </li>
+      </ol>
+    </div>
+  </section>
+
+  <!-- Final call -->
+  <section class="finish" aria-labelledby="finish-title">
+    <div class="finish-lines" aria-hidden="true"><span class="display">1</span><span class="display">2</span><span class="display">3</span></div>
+    <div class="finish-line-mark" aria-hidden="true"></div>
+    <div class="wrap">
+      <h2 id="finish-title" class="display finish-title">On your marks.</h2>
+      <p>The editor opens ready to go: a small working example the first time, and your last project after that.</p>
+      <a class="btn btn-run btn-lg btn-on-track" href="/app"><RunGlyph size={13} />Open the editor</a>
+    </div>
+  </section>
+</SitePage>

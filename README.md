@@ -1,169 +1,100 @@
 # HTML Runner
 
-> A client-side live code preview tool for **SWE402 Internet Programming** course.
+Write HTML, CSS and JavaScript in the browser and watch it run. No account, no install, nothing uploaded.
 
-[![Live Demo](https://img.shields.io/badge/Live%20Demo-htmlrunner.h190k.com-00d4ff?style=flat-square)](https://htmlrunner.h190k.com/)
-[![GitHub Repo](https://img.shields.io/badge/GitHub-H190K/HTML--runner-00d4ff?style=flat-square)](https://github.com/H190K/HTML-wrapper)
-[![Course](https://img.shields.io/badge/Course-SWE402%20Internet%20Programming-00d4ff?style=flat-square)]()
+**Live site:** [htmlrunner.h190k.com](https://htmlrunner.h190k.com/) · **Editor:** [htmlrunner.h190k.com/app](https://htmlrunner.h190k.com/app)
 
----
+![The HTML Runner editor: three code lanes on the left, a live preview on the right](docs/screenshots/editor.png)
 
-## Overview
+## What it does
 
-**HTML Runner** is a fully client-side live code preview tool designed for the **SWE402 Internet Programming** course. It provides an interactive environment where students can write HTML, CSS, and JavaScript code and instantly preview the result in a sandboxed iframe — without needing any external services, databases, or server-side processing.
+- **Three editors, one per language.** HTML, CSS and JS each get a lane with syntax highlighting, line numbers and bracket matching (CodeMirror 6).
+- **Live preview.** Auto-run refreshes the preview shortly after you stop typing. Turn it off and run by hand with `Ctrl`/`Cmd` + `Enter`. A stopwatch shows how long each run took to render.
+- **Device sizes.** Desktop, Tablet (768 × 1024) and Mobile (375 × 667). Frames scale down to fit the pane and show their true dimensions.
+- **Console.** `console.log`, warnings and uncaught errors from your page appear in a drawer under the preview.
+- **Share links.** The whole project is compressed into the URL hash (`/app#code=...`). Nothing is stored on a server.
+- **Export.** Download a `.zip` (`index.html`, `style.css`, `script.js`) or a single self-contained `.html`. `Ctrl`/`Cmd` + `S` downloads the zip.
+- **Starter templates.** `hello`, `card`, `clock`, `todo` and `canvas`, each reachable at `/app?template=<id>`.
+- **Autosave.** Your work is kept in this browser's `localStorage`.
+- **Light and dark themes**, resizable panes, and a stacked layout for phones.
 
-### Key Features
+![The HTML Runner landing page](docs/screenshots/landing.png)
 
-- **Three-Tab Code Editor** — Write HTML, CSS, and JavaScript in separate tabs
-- **Live Preview** — Instantly see your code execution in a sandboxed iframe
-- **Device Viewport Switching** — Test your designs at Desktop (1200px), Tablet (768px), and Mobile (375px) widths
-- **Run / Rerun** — Manually trigger code execution at any time
-- **Save as ZIP** — Download your project as a complete `index.html`, `style.css`, and `script.js` bundle
-- **About Modal** — Project documentation fetched dynamically from `ABOUT.md`
+## Privacy and the sandbox
 
----
+HTML Runner is a static site. There is no backend, no database and no analytics.
 
-## Live Demo
+Your code runs inside an `<iframe sandbox="allow-scripts allow-modals allow-forms allow-popups">`. `allow-same-origin` is deliberately left out, so the preview gets an opaque origin and cannot read the editor's storage, cookies or DOM. That matters because share links can carry code written by someone else. The preview talks to the editor only through `postMessage`, and console output is rendered as plain text.
 
-**Site URL:** [https://htmlrunner.h190k.com/](https://htmlrunner.h190k.com/)
+## Tech stack
 
-Open this link in your browser to start using HTML Runner immediately. No installation or signup required.
+| Concern | Choice |
+| --- | --- |
+| Framework | [Astro](https://astro.build) 7, static output |
+| Interactive island | React 19 |
+| Styling | Tailwind CSS v4 with CSS custom-property design tokens |
+| UI primitives | shadcn-style components on Radix UI |
+| State | nanostores |
+| Editor | CodeMirror 6 |
+| Zip and share-link compression | fflate |
+| Fonts | Archivo and JetBrains Mono, self-hosted via Fontsource |
+| Tests | Vitest |
+| Hosting | Cloudflare Pages |
 
----
+The full design and module contracts are in [docs/ARCHITECTURE.md](docs/ARCHITECTURE.md).
 
-## GitHub Repository
+## Getting started
 
-**Repository:** [https://github.com/H190K/HTML-wrapper](https://github.com/H190K/HTML-wrapper)
+Requires Node.js 22 or newer.
 
-The repository contains the complete source code for HTML Runner, including:
-
-```
-HTML-wrapper/
-├── index.html        # Main application shell
-├── css/
-│   └── style.css     # All styling (Molten Gold Premium Dark Theme)
-├── js/
-│   └── app.js        # Application logic
-├── assets/
-│   ├── favicon.png   # Site favicon
-│   └── ABOUT.md      # About modal content
-└── PROJECT_PLAN.md   # Project planning document
-```
-
----
-
-## For SWE402 Students
-
-This tool is part of the **SWE402 Internet Programming** course curriculum. It demonstrates core web technologies in action:
-
-### What This Project Teaches
-
-- **HTML5** — Semantic markup, meta tags, accessibility attributes
-- **CSS3** — Modern CSS features including CSS variables, flexbox, gradients, transitions, and responsive design
-- **Vanilla JavaScript (ES6+)** — DOM manipulation, event handling, async/await, template literals
-- **Browser APIs** — Iframe sandboxing, Blob API, URL.createObjectURL, Fetch API
-- **Client-Side Architecture** — No backend required, all processing happens in the browser
-
-### Course Requirements Demonstrated
-
-| Requirement | Implementation |
-|-------------|----------------|
-| HTML Structure | Semantic HTML5 with ARIA attributes |
-| CSS Styling | Custom CSS with variables, no frameworks |
-| JavaScript Logic | Pure vanilla JS, no libraries |
-| Responsive Design | Media queries for mobile/tablet |
-| External Resources | JSZip via CDN |
-
----
-
-## Technology Stack
-
-| Layer | Technology | Purpose |
-|-------|------------|---------|
-| Structure | HTML5 | Page markup with semantic elements |
-| Styling | CSS3 | Premium Molten Gold dark theme with amber accents |
-| Interactivity | Vanilla JavaScript (ES6+) | All app logic |
-| ZIP Creation | JSZip via CDN | Client-side file bundling |
-| Hosting | Cloudflare Pages | Fast global CDN distribution |
-
----
-
-## How It Works
-
-### Architecture
-
-1. **User writes code** in the editor textareas (HTML, CSS, or JS tabs)
-2. **User clicks Run** or uses device switcher
-3. **JavaScript builds a complete HTML document** by combining user's code with isolation styles
-4. **The document is injected** into a sandboxed iframe using `srcdoc`
-5. **User sees live preview** in the right panel
-
-### CSS Isolation
-
-The preview iframe uses a `.runner-preview` wrapper class with `!important` resets to ensure user styles don't leak out and parent page styles don't affect the preview:
-
-```css
-.runner-preview, .runner-preview *, .runner-preview *::before, .runner-preview *::after {
-    box-sizing: border-box !important;
-    margin: 0 !important;
-    padding: 0 !important;
-}
+```bash
+git clone https://github.com/H190K/HTML-wrapper.git
+cd HTML-wrapper
+npm install
+npm run dev
 ```
 
-### Sandboxed Execution
+| Command | What it does |
+| --- | --- |
+| `npm run dev` | Start the dev server at `http://localhost:4321` |
+| `npm run build` | Type-check with `astro check`, then build to `dist/` |
+| `npm run preview` | Serve the built `dist/` locally |
+| `npm test` | Run the unit tests |
+| `node scripts/brand/build.mjs` | Regenerate favicons, app icons and the social card from the SVG sources |
 
-The iframe uses `sandbox="allow-scripts"` to run user JavaScript safely without allowing access to the parent page, cookies, or local storage.
+## Project structure
 
----
+```
+src/
+  pages/                 index (landing), app (editor), about, 404
+  layouts/Base.astro     head, meta tags, theme bootstrap
+  components/
+    brand/               logo mark and wordmark
+    site/                landing, about and 404 pieces
+    playground/          the editor island (React)
+  lib/                   framework-free logic with unit tests
+                         (preview document, share links, export, storage, templates)
+  stores/playground.ts   application state
+  styles/                design tokens and page styles
+public/                  icons, social card, manifest, robots.txt
+scripts/brand/           SVG sources and the asset generator
+docs/                    architecture notes and screenshots
+```
 
-## Design System
+## Deploying
 
-### Color Palette
+The site builds to plain static files, so any static host works. On Cloudflare Pages:
 
-| Color | Hex | Usage |
-|-------|-----|-------|
-| Molten Gold | `#f59e0b` | Primary accent, active states |
-| Gold Bright | `#fbbf24` | Secondary accent, highlights |
-| Gold Dim | `#d97706` | Hover states |
-| Rose Quartz | `#f472b6` | Special highlights |
-| Background | `#09090d` | Main background |
-| Surface | `#111118` | Cards, panels |
-| Border | `#2d2d40` | Subtle borders |
+| Setting | Value |
+| --- | --- |
+| Build command | `npm run build` |
+| Build output directory | `dist` |
+| Node version | 22 (read from `.nvmrc`) |
 
-### Typography
+## Background
 
-- **Display/Body:** Geist (via Google Fonts)
-- **Code:** Geist Mono / JetBrains Mono
-
----
-
-## Browser Support
-
-| Browser | Support |
-|---------|---------|
-| Chrome 90+ | ✅ Full |
-| Firefox 88+ | ✅ Full |
-| Safari 14+ | ✅ Full |
-| Edge 90+ | ✅ Full |
-
----
+HTML Runner started as a project for the SWE402 Internet Programming course, written in plain HTML, CSS and JavaScript. Version 2 is a rebuild on Astro with a real code editor, a safer sandbox, a console, share links and a new design.
 
 ## License
 
-This project was created for educational purposes as part of the SWE402 Internet Programming course.
-
----
-
-## Author
-
-**H190K**
-
-- GitHub: [@H190K](https://github.com/H190K)
-- Course: SWE402 Internet Programming
-
----
-
-**Course:** SWE402 Internet Programming  
-**Project:** HTML Runner — Live Code Preview Tool  
-**Live Site:** [https://htmlrunner.h190k.com/](https://htmlrunner.h190k.com/)  
-**Repository:** [https://github.com/H190K/HTML-wrapper](https://github.com/H190K/HTML-wrapper)
+[MIT](LICENSE) © [H190K](https://h190k.com)

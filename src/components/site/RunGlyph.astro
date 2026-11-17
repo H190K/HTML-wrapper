@@ -1,0 +1,11 @@
+---
+/** The small "run" triangle used inside Run-style buttons. Decorative. */
+interface Props {
+  size?: number;
+}
+const { size = 12 } = Astro.props;
+---
+
+<svg class="run-glyph" width={size} height={size} viewBox="0 0 12 12" aria-hidden="true" focusable="false">
+  <path d="M2 1.2v9.6c0 .5.5.8.9.5l7.6-4.8a.6.6 0 0 0 0-1L2.9.7C2.5.4 2 .7 2 1.2Z" fill="currentColor"></path>
+</svg>

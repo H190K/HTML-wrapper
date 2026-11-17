@@ -1,0 +1,66 @@
+---
+import Logo from '@/components/brand/Logo.astro';
+import ThemeToggle from './ThemeToggle.astro';
+import RunGlyph from './RunGlyph.astro';
+import { GITHUB_URL } from './links';
+
+interface Props {
+  current?: 'home' | 'about';
+}
+const { current } = Astro.props;
+---
+
+<header class="site-header">
+  <div class="wrap bar">
+    <a class="brand-link" href="/" aria-label="HTML Runner home">
+      <Logo size={28} label="" />
+    </a>
+
+    <nav class="site-nav" aria-label="Main">
+      <a class="nav-link" href="/#templates">Templates</a>
+      <a class="nav-link" href="/about" aria-current={current === 'about' ? 'page' : undefined}>About</a>
+      <a class="nav-link" href={GITHUB_URL} rel="noopener">GitHub</a>
+    </nav>
+
+    <ThemeToggle />
+
+    <details class="menu">
+      <summary class="icon-btn" aria-label="Menu">
+        <svg class="bars" width="20" height="20" viewBox="0 0 24 24" aria-hidden="true">
+          <line x1="4" y1="8" x2="20" y2="8" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"></line>
+          <line x1="4" y1="16" x2="20" y2="16" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"></line>
+        </svg>
+      </summary>
+      <nav class="menu-panel" aria-label="Main">
+        <a href="/app">Open the editor</a>
+        <a href="/#templates">Templates</a>
+        <a href="/about">About</a>
+        <a href={GITHUB_URL} rel="noopener">GitHub</a>
+      </nav>
+    </details>
+
+    <a class="btn btn-run btn-sm header-cta" href="/app">
+      <RunGlyph size={11} />
+      Open the editor
+    </a>
+  </div>
+</header>
+
+<script>
+  // Close the mobile menu after choosing a link, on Escape, or on an outside click.
+  const menu = document.querySelector<HTMLDetailsElement>('.site-header .menu');
+  if (menu) {
+    menu.addEventListener('click', (e) => {
+      if ((e.target as HTMLElement).closest('a')) menu.open = false;
+    });
+    document.addEventListener('keydown', (e) => {
+      if (e.key === 'Escape' && menu.open) {
+        menu.open = false;
+        menu.querySelector('summary')?.focus();
+      }
+    });
+    document.addEventListener('click', (e) => {
+      if (menu.open && !menu.contains(e.target as Node)) menu.open = false;
+    });
+  }
+</script>

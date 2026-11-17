@@ -1,0 +1,61 @@
+---
+/**
+ * A stylised but truthful miniature of the playground: three lanes of code, a Run button,
+ * device switch, stopwatch, preview and console. Pure HTML/CSS. On load (motion allowed) the code
+ * types in lane by lane, Run is pressed, the preview lands and the stopwatch rolls to its time.
+ * The resting state is the finished state, so it reads correctly frozen or with reduced motion.
+ */
+import RunGlyph from './RunGlyph.astro';
+
+const ones = [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 0, 1, 2];
+---
+
+<figure class="rig" aria-label="The HTML Runner editor: HTML, CSS and JavaScript lanes on the left, the running page on the right, rendered in 12 milliseconds.">
+  <div class="rig-frame" aria-hidden="true">
+    <div class="rig-bar">
+      <span class="rig-run"><RunGlyph size={10} />Run</span>
+      <span class="rig-auto"><i></i>Auto-run</span>
+      <span class="rig-devices"><span class="on">Desktop</span><span>Tablet</span><span>Mobile</span></span>
+      <span class="rig-watch">
+        <span class="dot"></span>
+        <span class="odo-pair"
+          ><span class="odo"><span style="--to: 1">{[0, 1].map((n) => <span>{n}</span>)}</span></span><span class="odo"
+            ><span style="--to: 12">{ones.map((n) => <span>{n}</span>)}</span></span
+          ></span
+        >
+        <span>ms</span>
+      </span>
+    </div>
+
+    <div class="rig-body">
+      <div class="lanes">
+        <div class="lane" style="--lane-color: var(--lane-html)">
+          <div class="lane-head label-caps"><span class="lane-mark"></span><b>01</b> HTML</div>
+          <pre class="code"><span class="ln" style="--i:0"><span class="t-pun">&lt;</span><span class="t-tag">main</span> <span class="t-attr">class</span><span class="t-pun">=</span><span class="t-str">"card"</span><span class="t-pun">&gt;</span></span><span class="ln" style="--i:1">  <span class="t-pun">&lt;</span><span class="t-tag">h1</span><span class="t-pun">&gt;</span>Hello, Runner.<span class="t-pun">&lt;/</span><span class="t-tag">h1</span><span class="t-pun">&gt;</span></span><span class="ln" style="--i:2">  <span class="t-pun">&lt;</span><span class="t-tag">p</span> <span class="t-attr">id</span><span class="t-pun">=</span><span class="t-str">"lap"</span><span class="t-pun">&gt;</span>On your marks.<span class="t-pun">&lt;/</span><span class="t-tag">p</span><span class="t-pun">&gt;</span></span><span class="ln" style="--i:3"><span class="t-pun">&lt;/</span><span class="t-tag">main</span><span class="t-pun">&gt;</span></span></pre>
+        </div>
+        <div class="lane" style="--lane-color: var(--lane-css)">
+          <div class="lane-head label-caps"><span class="lane-mark"></span><b>02</b> CSS</div>
+          <pre class="code"><span class="ln" style="--i:4"><span class="t-tag">.card</span> <span class="t-pun">{'{'}</span></span><span class="ln opt" style="--i:5">  <span class="t-prop">padding</span><span class="t-pun">:</span> 2rem<span class="t-pun">;</span></span><span class="ln" style="--i:6">  <span class="t-prop">border</span><span class="t-pun">:</span> 2px solid<span class="t-pun">;</span></span><span class="ln" style="--i:7">  <span class="t-prop">box-shadow</span><span class="t-pun">:</span> 6px 6px 0 <span class="t-str">#d93d22</span><span class="t-pun">;</span></span><span class="ln" style="--i:8"><span class="t-pun">{'}'}</span></span></pre>
+        </div>
+        <div class="lane" style="--lane-color: var(--lane-js)">
+          <div class="lane-head label-caps"><span class="lane-mark"></span><b>03</b> JS</div>
+          <pre class="code"><span class="ln" style="--i:9"><span class="t-kw">const</span> lap <span class="t-pun">=</span> document.<span class="t-prop">querySelector</span><span class="t-pun">(</span><span class="t-str">'#lap'</span><span class="t-pun">);</span></span><span class="ln" style="--i:10">lap.<span class="t-prop">textContent</span> <span class="t-pun">=</span> <span class="t-str">'Off the blocks.'</span><span class="t-pun">;</span></span><span class="ln" style="--i:11">console.<span class="t-prop">log</span><span class="t-pun">(</span><span class="t-str">'ready'</span><span class="t-pun">);</span><span class="caret"></span></span></pre>
+        </div>
+      </div>
+
+      <div class="stage">
+        <div class="stage-view">
+          <span class="stage-sweep"></span>
+          <div class="page">
+            <h3>Hello, Runner.</h3>
+            <p>Off the blocks.</p>
+          </div>
+        </div>
+        <div class="stage-console">
+          <span class="lvl">log</span>
+          <span>ready</span>
+        </div>
+      </div>
+    </div>
+  </div>
+</figure>

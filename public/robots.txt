@@ -1,0 +1,4 @@
+User-agent: *
+Allow: /
+
+Sitemap: https://htmlrunner.h190k.com/sitemap-index.xml

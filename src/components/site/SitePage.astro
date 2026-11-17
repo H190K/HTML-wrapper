@@ -1,0 +1,29 @@
+---
+/** Shell for the marketing pages (/, /about, 404): skip link, header, main landmark, footer. */
+import Base from '@/layouts/Base.astro';
+import SiteHeader from './SiteHeader.astro';
+import SiteFooter from './SiteFooter.astro';
+import '@/styles/site.css';
+
+interface Props {
+  title: string;
+  description?: string;
+  path?: string;
+  noindex?: boolean;
+  /** Which nav item is current. */
+  current?: 'home' | 'about';
+}
+
+const { title, description, path, noindex, current } = Astro.props;
+---
+
+<Base title={title} description={description} path={path} noindex={noindex}>
+  <Fragment slot="head"><slot name="head" /></Fragment>
+  <a class="skip-link" href="#main">Skip to content</a>
+  <SiteHeader current={current} />
+  <main id="main" tabindex="-1">
+    <slot />
+  </main>
+  <slot name="after-main" />
+  <SiteFooter />
+</Base>

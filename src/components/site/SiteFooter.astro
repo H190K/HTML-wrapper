@@ -1,0 +1,20 @@
+---
+import Logo from '@/components/brand/Logo.astro';
+import { AUTHOR_URL, GITHUB_URL } from './links';
+
+const year = new Date().getFullYear();
+---
+
+<footer class="site-footer">
+  <div class="wrap row">
+    <a href="/" aria-label="HTML Runner home" style="text-decoration: none; color: var(--ink)">
+      <Logo size={22} label="" />
+    </a>
+    <nav aria-label="Footer">
+      <a href="/app">Editor</a>
+      <a href="/about">About</a>
+      <a href={GITHUB_URL} rel="noopener">GitHub</a>
+    </nav>
+    <p class="copy">&copy; {year} <a href={AUTHOR_URL} rel="noopener">H190K</a></p>
+  </div>
+</footer>

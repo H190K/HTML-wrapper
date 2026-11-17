@@ -1,0 +1,131 @@
+@import 'tailwindcss';
+@import '@fontsource-variable/archivo/wdth.css';
+@import '@fontsource-variable/jetbrains-mono/wght.css';
+
+/*
+ * HTML Runner design tokens: the "track meet" system.
+ * Chalk paper + asphalt ink + one tartan-track accent. No decorative gradients, no glow, no glass.
+ * Owned by the architecture: components consume these tokens, they do not invent colours.
+ */
+@custom-variant dark (&:where([data-theme='dark'], [data-theme='dark'] *));
+
+:root {
+  color-scheme: light;
+  --paper: #f4f1ea;
+  --surface: #fbfaf6;
+  --surface-2: #ece8de;
+  --ink: #16150f;
+  --ink-2: #45433a;
+  --muted: #6d6a5f;
+  --line: #d9d4c6;
+  --line-strong: #16150f;
+  --track: #d93d22;
+  --track-hover: #bf3119;
+  --on-track: #fffaf2;
+  --infield: #1f6b4a;
+  --warn: #9a6a00;
+  --danger: #b3261e;
+  --lane-html: #d93d22;
+  --lane-css: #1d5fbf;
+  --lane-js: #9a6a00;
+}
+
+[data-theme='dark'] {
+  color-scheme: dark;
+  --paper: #121210;
+  --surface: #1a1a17;
+  --surface-2: #232320;
+  --ink: #efece3;
+  --ink-2: #c9c5b8;
+  --muted: #979387;
+  --line: #2f2e29;
+  --line-strong: #efece3;
+  --track: #ff5a3c;
+  --track-hover: #ff7459;
+  --on-track: #1a0d09;
+  --infield: #58c795;
+  --warn: #e3b341;
+  --danger: #ff7b72;
+  --lane-html: #ff5a3c;
+  --lane-css: #6ea8ff;
+  --lane-js: #e3b341;
+}
+
+@theme inline {
+  --color-paper: var(--paper);
+  --color-surface: var(--surface);
+  --color-surface-2: var(--surface-2);
+  --color-ink: var(--ink);
+  --color-ink-2: var(--ink-2);
+  --color-muted: var(--muted);
+  --color-line: var(--line);
+  --color-line-strong: var(--line-strong);
+  --color-track: var(--track);
+  --color-track-hover: var(--track-hover);
+  --color-on-track: var(--on-track);
+  --color-infield: var(--infield);
+  --color-warn: var(--warn);
+  --color-danger: var(--danger);
+  --color-lane-html: var(--lane-html);
+  --color-lane-css: var(--lane-css);
+  --color-lane-js: var(--lane-js);
+
+  --font-sans: 'Archivo Variable', ui-sans-serif, system-ui, sans-serif;
+  --font-mono: 'JetBrains Mono Variable', ui-monospace, SFMono-Regular, Consolas, monospace;
+
+  --radius-sm: 3px;
+  --radius-md: 6px;
+  --radius-lg: 10px;
+
+  --ease-out-quart: cubic-bezier(0.25, 1, 0.5, 1);
+  --ease-in-out-quart: cubic-bezier(0.76, 0, 0.24, 1);
+}
+
+@layer base {
+  html {
+    font-family: var(--font-sans);
+    background: var(--paper);
+    color: var(--ink);
+    -webkit-font-smoothing: antialiased;
+    text-rendering: optimizeLegibility;
+  }
+  body {
+    min-height: 100dvh;
+  }
+  ::selection {
+    background: var(--track);
+    color: var(--on-track);
+  }
+  :focus-visible {
+    outline: 2px solid var(--track);
+    outline-offset: 2px;
+  }
+  @media (prefers-reduced-motion: reduce) {
+    *,
+    *::before,
+    *::after {
+      animation-duration: 0.01ms !important;
+      animation-iteration-count: 1 !important;
+      transition-duration: 0.01ms !important;
+      scroll-behavior: auto !important;
+    }
+  }
+}
+
+/* Display voice: Archivo pushed wide and heavy. */
+@utility display {
+  font-family: var(--font-sans);
+  font-stretch: 125%;
+  font-weight: 800;
+  letter-spacing: -0.035em;
+  line-height: 0.95;
+}
+
+/* Small mono labels: lane numbers, panel titles, meta. */
+@utility label-caps {
+  font-family: var(--font-mono);
+  font-size: 0.6875rem;
+  font-weight: 500;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+}

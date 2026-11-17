@@ -1,0 +1,56 @@
+---
+/**
+ * HTML Runner logo: a "run" triangle sliced into three lanes (HTML, CSS, JS) on a tartan-track tile,
+ * plus the wordmark outlined from Archivo 800 / width 125. Paths come from scripts/brand/build.mjs.
+ *
+ * Colours follow the theme tokens: tile = --track, lanes = --on-track, wordmark = currentColor.
+ */
+import { LOCKUP_WIDTH, MARK_LANES, MARK_RADIUS, WORDMARK_PATH } from './logo-paths';
+
+interface Props {
+  /** Rendered height in px. The width follows the aspect ratio. */
+  size?: number;
+  /** Render the mark only, without the wordmark. */
+  markOnly?: boolean;
+  /** Accessible name. Pass an empty string when the logo sits next to visible text with the same name. */
+  label?: string;
+  class?: string;
+}
+
+const { size = 28, markOnly = false, label = 'HTML Runner', class: className } = Astro.props;
+const width = markOnly ? 32 : LOCKUP_WIDTH;
+const a11y = label ? { role: 'img' as const, 'aria-label': label } : { 'aria-hidden': 'true' as const };
+---
+
+<svg
+  xmlns="http://www.w3.org/2000/svg"
+  viewBox={`0 0 ${width} 32`}
+  width={(size * width) / 32}
+  height={size}
+  class:list={['logo', className]}
+  focusable="false"
+  {...a11y}
+>
+  <rect class="logo-tile" width="32" height="32" rx={MARK_RADIUS}></rect>
+  <g class="logo-lanes">
+    {MARK_LANES.map((points) => <polygon points={points} />)}
+  </g>
+  {!markOnly && <path class="logo-word" d={WORDMARK_PATH} />}
+</svg>
+
+<style>
+  .logo {
+    display: block;
+    flex: none;
+    overflow: visible;
+  }
+  .logo-tile {
+    fill: var(--track);
+  }
+  .logo-lanes {
+    fill: var(--on-track);
+  }
+  .logo-word {
+    fill: currentColor;
+  }
+</style>

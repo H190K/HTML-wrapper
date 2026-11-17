@@ -1,0 +1,166 @@
+/*
+ * Playground-only styles. Colours come from the tokens in global.css;
+ * this file adds the syntax palette and a few pieces Tailwind utilities can't express cleanly.
+ */
+
+:root {
+  --syn-keyword: #b12f17;
+  --syn-string: #1f6b4a;
+  --syn-number: #8a5d00;
+  --syn-comment: #8c887b;
+  --syn-tag: #b12f17;
+  --syn-attr: #1d5fbf;
+  --syn-property: #1d5fbf;
+  --syn-function: #16150f;
+  --syn-punct: #8c887b;
+  --syn-selection: rgb(29 95 191 / 0.16);
+  --syn-active-line: rgb(22 21 15 / 0.035);
+  --syn-match: rgb(154 106 0 / 0.16);
+}
+
+[data-theme='dark'] {
+  --syn-keyword: #ff8a70;
+  --syn-string: #7fd3a8;
+  --syn-number: #e3b341;
+  --syn-comment: #7d796e;
+  --syn-tag: #ff8a70;
+  --syn-attr: #8bb9ff;
+  --syn-property: #8bb9ff;
+  --syn-function: #efece3;
+  --syn-punct: #8a867a;
+  --syn-selection: rgb(110 168 255 / 0.22);
+  --syn-active-line: rgb(239 236 227 / 0.04);
+  --syn-match: rgb(227 179 65 / 0.18);
+}
+
+.cm-host .cm-editor {
+  height: 100%;
+}
+.cm-host .cm-scroller {
+  /* JetBrains Mono ligatures turn => into an arrow; code should show what was typed */
+  font-variant-ligatures: none;
+}
+
+/* Quiet scrollbars across the shell */
+.cm-host .cm-scroller,
+[role='log'],
+.stage {
+  scrollbar-width: thin;
+  scrollbar-color: var(--line) transparent;
+}
+
+@media (max-width: 767px) {
+  .cm-host {
+    /* 16px avoids iOS zoom-on-focus */
+    --editor-font-size: 16px;
+  }
+}
+
+/* ---------- resizable split ---------- */
+.split-handle {
+  position: relative;
+  width: 1px;
+  background: var(--line-strong);
+  outline: none;
+}
+.split-handle::before {
+  /* generous invisible hit area */
+  content: '';
+  position: absolute;
+  inset: 0 -5px;
+}
+.split-grip {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: 6px;
+  height: 36px;
+  border: 1px solid var(--line-strong);
+  border-radius: 3px;
+  background: var(--paper);
+  transform: translate(-50%, -50%);
+  transition: transform 180ms var(--ease-out-quart);
+}
+.split-handle[data-separator='hover'] .split-grip,
+.split-handle[data-separator='active'] .split-grip,
+.split-handle[data-separator='focus'] .split-grip {
+  transform: translate(-50%, -50%) scaleY(1.5);
+}
+.split-handle[data-separator='active'] .split-grip,
+.split-handle[data-separator='focus'] .split-grip {
+  background: var(--track);
+  border-color: var(--track);
+}
+.split-handle:focus-visible .split-grip {
+  outline: 2px solid var(--track);
+  outline-offset: 2px;
+}
+/* The iframe would swallow pointer events mid-drag. */
+[data-group]:has(.split-handle[data-separator='active']) iframe {
+  pointer-events: none;
+}
+
+/* ---------- console drawer ---------- */
+.console-panel {
+  transform: translateY(0);
+  opacity: 1;
+  transition:
+    transform 260ms var(--ease-out-quart),
+    opacity 200ms var(--ease-out-quart);
+}
+.console-panel.is-closed {
+  transform: translateY(100%);
+  opacity: 0;
+  pointer-events: none;
+}
+
+/* ---------- run progress ---------- */
+.run-sweep {
+  animation: run-sweep 900ms var(--ease-out-quart) forwards;
+}
+@keyframes run-sweep {
+  from {
+    transform: scaleX(0);
+  }
+  to {
+    transform: scaleX(0.85);
+  }
+}
+
+/* ---------- popovers (tooltips, menus, dialogs) ---------- */
+.ui-pop[data-state='open'],
+.ui-pop[data-state='delayed-open'],
+.ui-pop[data-state='instant-open'] {
+  animation: ui-in 160ms var(--ease-out-quart);
+}
+.ui-pop[data-state='closed'] {
+  animation: ui-out 120ms var(--ease-out-quart) forwards;
+}
+.ui-fade[data-state='open'] {
+  animation: ui-fade-in 180ms var(--ease-out-quart);
+}
+.ui-fade[data-state='closed'] {
+  animation: ui-fade-out 120ms var(--ease-out-quart) forwards;
+}
+@keyframes ui-in {
+  from {
+    opacity: 0;
+    transform: translateY(-3px) scale(0.98);
+  }
+}
+@keyframes ui-out {
+  to {
+    opacity: 0;
+    transform: scale(0.98);
+  }
+}
+@keyframes ui-fade-in {
+  from {
+    opacity: 0;
+  }
+}
+@keyframes ui-fade-out {
+  to {
+    opacity: 0;
+  }
+}
